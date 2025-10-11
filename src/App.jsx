@@ -1,11 +1,11 @@
 
-import './App.css'
+import CreateToken from './components/CreateToken'
 
 function App() {
  
 
   return (
-    <div className='bg-red-700'>Solana Token Launchpad </div>
+    <CreateToken></CreateToken>
   )
 }
 
