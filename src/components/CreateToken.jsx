@@ -2,10 +2,16 @@ import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { TOKEN_2022_PROGRAM_ID, createMintToInstruction, createAssociatedTokenAccountInstruction, getMintLen, createInitializeMetadataPointerInstruction, createInitializeMintInstruction, TYPE_SIZE, LENGTH_SIZE, ExtensionType, getAssociatedTokenAddressSync } from "@solana/spl-token"
 import { createInitializeInstruction, pack } from '@solana/spl-token-metadata';
+import { useState } from "react";
 
 
 
 function CreateToken() {
+
+    const [tokenName, setTokenName] = useState('')
+    const [symbol, setSymbol] = useState('')
+    const [url, setUrl] = useState('')
+    const [initialSupply, setInitialSupply] = useState('')
 
     const { connection } = useConnection();
     const wallet = useWallet();
@@ -14,9 +20,10 @@ function CreateToken() {
         const mintKeypair = Keypair.generate();
         const metadata = {
             mint: mintKeypair.publicKey,
-            name: 'STHA',
-            symbol: 'ST',
-            uri: '',
+            name: tokenName,
+            symbol: symbol,
+            uri: url,
+            supply: initialSupply,
             additionalMetadata: [],
         };
 
@@ -82,6 +89,13 @@ function CreateToken() {
         await wallet.sendTransaction(transaction3, connection);
 
         console.log("Minted!")
+
+        setTokenName('')
+        setSymbol('')
+        setInitialSupply('')
+        setUrl('')
+
+
     }
 
 
@@ -89,10 +103,27 @@ function CreateToken() {
     <div className='h-screen w-full flex justify-center items-center bg-neutral-800 font-serif'>
         <div className='text-white bg-neutral-950 w-[40%] h-[400px] p-3 rounded-lg'>
             <div className='flex flex-col gap-6 m-6'>
-              <input className='p-2 border rounded-lg' type="text" placeholder='Token Name' />
-              <input className='p-2 border rounded-lg' type="text" placeholder='Token Symbol' />
-              <input className='p-2 border rounded-lg' type="text" placeholder='Initial Supply' />
-              <input className='p-2 border rounded-lg' type="url" placeholder='Token Image URL' />
+              <input 
+              className='p-2 border rounded-lg' type="text" placeholder='Token Name'
+              value={tokenName}
+              onChange={(e)=>{setTokenName(e.target.value)}}
+               />
+              <input 
+              className='p-2 border rounded-lg' type="text" placeholder='Token Symbol'
+              value={symbol}
+              onChange={(e)=>{setSymbol(e.target.value)}}
+              
+              />
+              <input 
+              className='p-2 border rounded-lg' type="text" placeholder='Initial Supply'
+              value={initialSupply}
+              onChange={(e)=>{setInitialSupply(e.target.value)}}
+               />
+              <input 
+               className='p-2 border rounded-lg' type="url" placeholder='Token Image URL'
+               value={url}
+               onChange={(e)=>{setUrl(e.target.value)}}
+                />
               <button type="button" 
                 className='mt-10 bg-amber-700 p-2 rounded-lg cursor-pointer'
                 onClick={createToken}
