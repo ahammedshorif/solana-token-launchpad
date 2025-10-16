@@ -8,7 +8,8 @@ function App() {
 
   return (
     <ConnectionProvider endpoint="http://api.devnet.solana.com">
-      <WalletProvider wallets={[]}>
+      <WalletProvider wallets={[]} autoConnect>
+       <WalletModalProvider>
 
           <div className="flex justify-between p-3 bg-neutral-950 sticky top-0">
              <WalletMultiButton />
@@ -16,7 +17,7 @@ function App() {
           </div>
          <CreateToken></CreateToken>
 
-
+        </WalletModalProvider>
        </WalletProvider>
     </ConnectionProvider>
   )
